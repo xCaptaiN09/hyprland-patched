@@ -1,0 +1,37 @@
+diff --git a/src/render/Renderer.cpp b/src/render/Renderer.cpp
+index 31579342..773370b2 100644
+--- a/src/render/Renderer.cpp
++++ b/src/render/Renderer.cpp
+@@ -2864,10 +2864,18 @@ void IHyprRenderer::ensureCursorRenderingMode() {
+     if (*PCURSORTIMEOUT > 0)
+         m_cursorHiddenConditions.hiddenOnTimeout = *PCURSORTIMEOUT < g_pInputManager->m_lastCursorMovement.getSeconds();
+ 
++    if (m_cursorHiddenConditions.hiddenOnTimeout && !m_cursorIdleAnimShown) {
++        g_pCursorManager->setCursorFromName("progress");
++        m_cursorIdleAnimShown = true;
++    } else if (!m_cursorHiddenConditions.hiddenOnTimeout && m_cursorIdleAnimShown) {
++        g_pCursorManager->setCursorFromName("default");
++        m_cursorIdleAnimShown = false;
++    }
++
+     m_cursorHiddenByCondition =
+-        m_cursorHiddenConditions.hiddenOnTimeout || m_cursorHiddenConditions.hiddenOnTouch || m_cursorHiddenConditions.hiddenOnTablet || m_cursorHiddenConditions.hiddenOnKeyboard;
++        m_cursorHiddenConditions.hiddenOnTouch || m_cursorHiddenConditions.hiddenOnTablet || m_cursorHiddenConditions.hiddenOnKeyboard;
+ 
+-    const bool HIDE = m_cursorHiddenByCondition || (*PINVISIBLE != 0);
++    const bool HIDE = (m_cursorHiddenByCondition && !m_cursorIdleAnimShown) || (*PINVISIBLE != 0);
+ 
+     if (HIDE == m_cursorHidden)
+         return;
+diff --git a/src/render/Renderer.hpp b/src/render/Renderer.hpp
+index afd8999f..ef07f181 100644
+--- a/src/render/Renderer.hpp
++++ b/src/render/Renderer.hpp
+@@ -271,6 +271,7 @@ namespace Render {
+         bool                              shouldBlur(WP<Desktop::View::CPopup> p);
+ 
+         bool                              m_cursorHidden            = false;
++        bool                              m_cursorIdleAnimShown     = false;
+         bool                              m_cursorHiddenByCondition = false;
+         bool                              m_cursorHasSurface        = false;
+         SP<Aquamarine::IBuffer>           m_currentBuffer           = nullptr;
