@@ -1,7 +1,7 @@
 # Maintainer: Cap
 pkgname=hyprland-patched
 pkgver=0.55.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Hyprland with idle cursor animation patch"
 arch=(x86_64)
 url="https://github.com/hyprwm/Hyprland"
