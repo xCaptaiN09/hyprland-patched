@@ -1,7 +1,7 @@
 # Maintainer: Cap
 pkgname=hyprland-patched
-pkgver=0.55.2
-pkgrel=2
+pkgver=0.55.4
+pkgrel=1
 pkgdesc="Hyprland with idle cursor animation patch"
 arch=(x86_64)
 url="https://github.com/hyprwm/Hyprland"
@@ -64,7 +64,8 @@ source=(
     "hyprland::git+https://github.com/hyprwm/Hyprland.git#tag=v${pkgver}"
     "hyprland-idle-cursor.patch"
 )
-sha256sums=(SKIP SKIP)
+sha256sums=('381b84fd51e3b9447db405184b563aecbd3925b97e4c0880675ecfd136408abf'
+            'cea744ee346cff5794cef9e8c1a4b6da2b879c4e96b84e247b9f1f7a1d3c5c88')
 
 prepare() {
     cd hyprland
